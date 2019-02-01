@@ -119,6 +119,9 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  input-imports = ["github.com/chrisjpalmer/word_search_system_grpc"]
+  input-imports = [
+    "github.com/chrisjpalmer/word_search_system_grpc",
+    "google.golang.org/grpc",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
