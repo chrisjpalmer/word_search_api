@@ -1,0 +1,1 @@
+protoc -I ./ ./word_search_system_grpc.proto --go_out=plugins=grpc:./
