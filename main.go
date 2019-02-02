@@ -41,5 +41,5 @@ func main() {
 	http.Handle("/keywords", keyWordsRouteHandler)
 
 	//Listen for http requests
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(config.HTTPListenAddress, nil)
 }

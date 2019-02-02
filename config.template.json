@@ -1,3 +1,4 @@
 {
-    "wordSearchSystemAddress":"localhost:50051"
+    "wordSearchSystemAddress":"localhost:50051",
+    "httpListenAddress":":8080"
 }

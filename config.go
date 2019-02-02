@@ -7,7 +7,10 @@ import (
 
 //Config - defines the config parameters which should be exposed to this microservice
 type Config struct {
+	//The address of the word_search_system for gRPC calls
 	WordSearchSystemAddress string `json:"wordSearchSystemAddress"`
+	//The port to listen on for the http server
+	HTTPListenAddress string `json:"httpListenAddress"`
 }
 
 //ParseConfig - reads the json file at configPath and outputs the Config structure
