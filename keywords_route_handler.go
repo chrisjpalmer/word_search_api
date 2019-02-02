@@ -67,8 +67,8 @@ type KeyWordsRouteHandlerGetOutput struct {
 	KeyWords []string `json:"keywords"`
 }
 
-//ServeGET - handles a GET request at /keywords
-func (keyWordsRouteHander *KeyWordsRouteHandler) ServeGET(w http.ResponseWriter, r *http.Request) (output *KeyWordsRouteHandlerGetOutput, err error) {
+//ServeGET - handles a GET request at /keywords - executes the Top5SearchKeyWords on the WordSearchSystem to return the top 5 most searched keywords
+func (keyWordsRouteHandler *KeyWordsRouteHandler) ServeGET(w http.ResponseWriter, r *http.Request) (output *KeyWordsRouteHandlerGetOutput, err error) {
 	//Deserialize input
 	var input KeyWordsRouteHandlerGetInput
 	jsonDec := json.NewDecoder(r.Body)
@@ -78,7 +78,7 @@ func (keyWordsRouteHander *KeyWordsRouteHandler) ServeGET(w http.ResponseWriter,
 	top5SearchKeyWordsRequest := &wordsearchsystemgrpc.Top5SearchKeyWordsRequest{}
 
 	//Send request
-	reply, _err := keyWordsRouteHander.wordSearchSystemClient.Top5SearchKeyWords(r.Context(), top5SearchKeyWordsRequest)
+	reply, _err := keyWordsRouteHandler.wordSearchSystemClient.Top5SearchKeyWords(r.Context(), top5SearchKeyWordsRequest)
 	if _err != nil {
 		return nil, _err
 	}

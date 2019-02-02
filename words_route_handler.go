@@ -71,7 +71,7 @@ type WordsRouteHandlerGetOutput struct {
 	Matches []string `json:"matches"`
 }
 
-//ServeGET - handles a GET request at /words
+//ServeGET - handles a GET request at /words - executes the SearchWord query on the WordSearchSystem to find possible matches for the provided keyword
 func (wordsRouteHander *WordsRouteHandler) ServeGET(w http.ResponseWriter, r *http.Request) (output *WordsRouteHandlerGetOutput, err error) {
 	//Deserialize input
 	var input WordsRouteHandlerGetInput
@@ -105,7 +105,7 @@ type WordsRouteHandlerPostInput struct {
 type WordsRouteHandlerPostOutput struct {
 }
 
-//ServePOST - handles a POST request at /words
+//ServePOST - handles a POST request at /words - executes the AddWords query on the WordSearchSystem to add new words to the list
 func (wordsRouteHander *WordsRouteHandler) ServePOST(w http.ResponseWriter, r *http.Request) (output *WordsRouteHandlerPostOutput, err error) {
 	//Deserialize input
 	var input WordsRouteHandlerPostInput
