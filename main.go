@@ -26,7 +26,7 @@ func main() {
 	//Announce start
 	log.Println("WordSearchAPI has started")
 
-	// Set up a connection to the server.
+	// Set up a connection to the word_search_system microservice.
 	conn, err = grpc.Dial(config.WordSearchSystemAddress, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
@@ -34,10 +34,12 @@ func main() {
 	defer conn.Close()
 	wordSearchSystemClient := wordsearchsystemgrpc.NewWordSearchSystemClient(conn)
 
+	//Initialize the handlers and connect with HTTP
 	wordsRouteHandler := NewWordsRouteHandler(wordSearchSystemClient)
 	keyWordsRouteHandler := NewKeyWordsRouteHandler(wordSearchSystemClient)
-
 	http.Handle("/words", wordsRouteHandler)
 	http.Handle("/keywords", keyWordsRouteHandler)
+
+	//Listen for http requests
 	http.ListenAndServe(":8080", nil)
 }

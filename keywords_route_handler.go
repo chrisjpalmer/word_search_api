@@ -9,16 +9,19 @@ import (
 	wordsearchsystemgrpc "github.com/chrisjpalmer/word_search_system_grpc"
 )
 
+//KeyWordsRouteHandler - handles http requests to /keywords and interacts with WordSearchSystemClient
 type KeyWordsRouteHandler struct {
 	wordSearchSystemClient wordsearchsystemgrpc.WordSearchSystemClient
 }
 
+//NewKeyWordsRouteHandler - creates a new KeyWordsRouteHandler and initializes it with the WordSearchSystemClient
 func NewKeyWordsRouteHandler(wordSearchSystemClient wordsearchsystemgrpc.WordSearchSystemClient) *KeyWordsRouteHandler {
 	newKeyWordsRouteHandler := new(KeyWordsRouteHandler)
 	newKeyWordsRouteHandler.wordSearchSystemClient = wordSearchSystemClient
 	return newKeyWordsRouteHandler
 }
 
+//ServeHttp - handles an http request at /keywords
 func (keyWordsRouteHandler *KeyWordsRouteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var (
 		err         error
@@ -35,9 +38,10 @@ func (keyWordsRouteHandler *KeyWordsRouteHandler) ServeHTTP(w http.ResponseWrite
 		}
 	}()
 
+	//Based on the method, direct to the appropriate sub handler
 	switch r.Method {
 	case "GET":
-		//Apply search term and search for word
+		//get top 5 search keywords
 		output, err = keyWordsRouteHandler.ServeGET(w, r)
 	default:
 		err = errors.New("Invalid HTTP method supplied")
@@ -54,13 +58,16 @@ func (keyWordsRouteHandler *KeyWordsRouteHandler) ServeHTTP(w http.ResponseWrite
 	}
 }
 
+//KeyWordsRouteHandlerGetInput - the input parameters for /keywords GET
 type KeyWordsRouteHandlerGetInput struct {
 }
 
+//KeyWordsRouteHandlerGetOutput - the output parameters for /keywords GET
 type KeyWordsRouteHandlerGetOutput struct {
 	KeyWords []string `json:"keywords"`
 }
 
+//ServeGET - handles a GET request at /keywords
 func (keyWordsRouteHander *KeyWordsRouteHandler) ServeGET(w http.ResponseWriter, r *http.Request) (output *KeyWordsRouteHandlerGetOutput, err error) {
 	//Deserialize input
 	var input KeyWordsRouteHandlerGetInput

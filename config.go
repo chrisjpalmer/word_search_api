@@ -5,10 +5,12 @@ import (
 	"os"
 )
 
+//Config - defines the config parameters which should be exposed to this microservice
 type Config struct {
 	WordSearchSystemAddress string `json:"wordSearchSystemAddress"`
 }
 
+//ParseConfig - reads the json file at configPath and outputs the Config structure
 func ParseConfig(configPath string) (*Config, error) {
 	var (
 		err  error

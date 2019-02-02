@@ -9,16 +9,19 @@ import (
 	wordsearchsystemgrpc "github.com/chrisjpalmer/word_search_system_grpc"
 )
 
+//WordsRouteHandler - handles http requests to /words and interacts with WordSearchSystemClient
 type WordsRouteHandler struct {
 	wordSearchSystemClient wordsearchsystemgrpc.WordSearchSystemClient
 }
 
+//NewWordsRouteHandler - creates a new WordsRouteHandler and initializes it with the WordSearchSystemClient
 func NewWordsRouteHandler(wordSearchSystemClient wordsearchsystemgrpc.WordSearchSystemClient) *WordsRouteHandler {
 	newWordsRouteHandler := new(WordsRouteHandler)
 	newWordsRouteHandler.wordSearchSystemClient = wordSearchSystemClient
 	return newWordsRouteHandler
 }
 
+//ServeHttp - handles an http request at /words
 func (wordsRouteHandler *WordsRouteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var (
 		err         error
@@ -35,6 +38,7 @@ func (wordsRouteHandler *WordsRouteHandler) ServeHTTP(w http.ResponseWriter, r *
 		}
 	}()
 
+	//Based on the method, direct to the appropriate sub handler
 	switch r.Method {
 	case "GET":
 		//Apply search term and search for word
@@ -57,14 +61,17 @@ func (wordsRouteHandler *WordsRouteHandler) ServeHTTP(w http.ResponseWriter, r *
 	}
 }
 
+//WordsRouteHandlerGetInput - the input parameters for /words GET
 type WordsRouteHandlerGetInput struct {
 	KeyWord string `json:"keyword"`
 }
 
+//WordsRouteHandlerGetOutput - the output parameters for /words GET
 type WordsRouteHandlerGetOutput struct {
 	Matches []string `json:"matches"`
 }
 
+//ServeGET - handles a GET request at /words
 func (wordsRouteHander *WordsRouteHandler) ServeGET(w http.ResponseWriter, r *http.Request) (output *WordsRouteHandlerGetOutput, err error) {
 	//Deserialize input
 	var input WordsRouteHandlerGetInput
@@ -89,13 +96,16 @@ func (wordsRouteHander *WordsRouteHandler) ServeGET(w http.ResponseWriter, r *ht
 	return _output, nil
 }
 
+//WordsRouteHandlerPostInput - the input parameters for /words POST
 type WordsRouteHandlerPostInput struct {
 	Words []string `json:"words"`
 }
 
+//WordsRouteHandlerPostOutput - the output parameters for /words POST
 type WordsRouteHandlerPostOutput struct {
 }
 
+//ServePOST - handles a POST request at /words
 func (wordsRouteHander *WordsRouteHandler) ServePOST(w http.ResponseWriter, r *http.Request) (output *WordsRouteHandlerPostOutput, err error) {
 	//Deserialize input
 	var input WordsRouteHandlerPostInput
