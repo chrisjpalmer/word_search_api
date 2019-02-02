@@ -58,10 +58,6 @@ func (keyWordsRouteHandler *KeyWordsRouteHandler) ServeHTTP(w http.ResponseWrite
 	}
 }
 
-//KeyWordsRouteHandlerGetInput - the input parameters for /keywords GET
-type KeyWordsRouteHandlerGetInput struct {
-}
-
 //KeyWordsRouteHandlerGetOutput - the output parameters for /keywords GET
 type KeyWordsRouteHandlerGetOutput struct {
 	KeyWords []string `json:"keywords"`
@@ -69,11 +65,6 @@ type KeyWordsRouteHandlerGetOutput struct {
 
 //ServeGET - handles a GET request at /keywords - executes the Top5SearchKeyWords on the WordSearchSystem to return the top 5 most searched keywords
 func (keyWordsRouteHandler *KeyWordsRouteHandler) ServeGET(w http.ResponseWriter, r *http.Request) (output *KeyWordsRouteHandlerGetOutput, err error) {
-	//Deserialize input
-	var input KeyWordsRouteHandlerGetInput
-	jsonDec := json.NewDecoder(r.Body)
-	jsonDec.Decode(&input)
-
 	//Form request
 	top5SearchKeyWordsRequest := &wordsearchsystemgrpc.Top5SearchKeyWordsRequest{}
 

@@ -61,11 +61,6 @@ func (wordsRouteHandler *WordsRouteHandler) ServeHTTP(w http.ResponseWriter, r *
 	}
 }
 
-//WordsRouteHandlerGetInput - the input parameters for /words GET
-type WordsRouteHandlerGetInput struct {
-	KeyWord string `json:"keyword"`
-}
-
 //WordsRouteHandlerGetOutput - the output parameters for /words GET
 type WordsRouteHandlerGetOutput struct {
 	Matches []string `json:"matches"`
@@ -74,13 +69,20 @@ type WordsRouteHandlerGetOutput struct {
 //ServeGET - handles a GET request at /words - executes the SearchWord query on the WordSearchSystem to find possible matches for the provided keyword
 func (wordsRouteHander *WordsRouteHandler) ServeGET(w http.ResponseWriter, r *http.Request) (output *WordsRouteHandlerGetOutput, err error) {
 	//Deserialize input
-	var input WordsRouteHandlerGetInput
-	jsonDec := json.NewDecoder(r.Body)
-	jsonDec.Decode(&input)
+	keyword, ok := r.URL.Query()["keyword"]
+	if !ok {
+		return nil, errors.New("missing keyword url parameter")
+	}
+	if len(keyword) != 1 {
+		return nil, errors.New("keyword parameter should be specified keyword=someword")
+	}
+	if len(keyword[0]) == 0 {
+		return nil, errors.New("keyword parameter cannot be empty")
+	}
 
 	//Form request
 	searchWordRequest := &wordsearchsystemgrpc.SearchWordRequest{
-		KeyWord: input.KeyWord,
+		KeyWord: keyword[0],
 	}
 
 	//Send request
